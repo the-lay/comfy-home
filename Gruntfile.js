@@ -146,6 +146,22 @@ module.exports = function (grunt) {
           cwd: './assets',
           src: ['**/*.!(coffee)'],
           dest: '.tmp/public'
+        }, {
+          expand: true,
+          flatten: true,
+          src: ['bower_components/bootstrap/dist/css/bootstrap.min.css'],
+          dest: '.tmp/public/css/'
+        }, {
+          expand: true,
+          flatten: true,
+          src: ['bower_components/bootstrap/dist/fonts/*'],
+          dest: '.tmp/public/fonts/'
+        }, {
+          expand: true,
+          flatten: true,
+          src: ['bower_components/bootstrap/dist/js/bootstrap.min.js',
+                'bower_components/jquery/dist/jquery.min.js'],
+          dest: '.tmp/public/js'
         }
         ]
       },
