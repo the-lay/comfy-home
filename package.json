@@ -1,8 +1,8 @@
 {
-  "name": "comfy-home-frontend",
+  "name": "comfy-home",
   "private": true,
-  "version": "0.0.0",
-  "description": "a Sails application",
+  "version": "0.0.1",
+  "description": "DIY Smarthome",
   "dependencies": {
     "sails": "git://github.com/balderdashy/sails.git#v0.10",
     "grunt": "0.4.1",
@@ -19,7 +19,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/the-lay/comfy-home-frontend.git"
+    "url": "git://github.com/the-lay/comfy-home.git"
   },
   "author": "Ilja Gubins",
   "license": "MIT"
