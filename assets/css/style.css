@@ -1,0 +1,79 @@
+@import url(http://fonts.googleapis.com/css?family=Pompiere);
+
+.container {
+  margin-top: 20px;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+nav div, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Pompiere';
+  text-transform: uppercase;
+}
+
+.nav li {
+  margin-top: 12px;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.nav li a {
+  color: #000;
+}
+
+.nav li:last-child {
+  margin-bottom: 10px;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus {
+  color: #000;
+  background-color: transparent;
+}
+
+.nav-pills>li.active>a:hover {
+  background-color: #eee;
+  color: #000;
+}
+
+.carousel-control.left, .carousel-control.right {
+  top: 40%;
+  background: none;
+  font-size: 50px;
+}
+
+.carousel-caption {
+  font-size: 28px;
+  bottom: 0;
+}
+
+.post {
+  margin-bottom: 30px;
+}
+
+a.thumbnail:hover, a.thumbnail:focus{
+  border: 1px solid black;
+}
+
+footer p {
+  text-align: center;
+}
+
+@media (max-width: 992px){
+  .carousel-caption {
+    font-size: 18px;
+  }
+  .nav li {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px){
+  .thumbnail {
+    border: none;
+  }
+  a.thumbnail:hover, a.thumbnail:focus{
+    border: none;
+  }
+}
