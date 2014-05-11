@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "description": "a Sails application",
   "dependencies": {
-    "sails": "0.9.16",
+    "sails": "git://github.com/balderdashy/sails.git#v0.10",
     "grunt": "0.4.1",
-    "sails-disk": "~0.9.0",
+    "sails-disk": "git://github.com/balderdashy/sails-disk.git#v0.10",
     "ejs": "0.8.4",
     "optimist": "0.3.4",
-    "sails-mongo": "~0.9.8",
+    "sails-mongo": "^0.10.0-rc3",
     "async": "~0.8.0"
   },
   "scripts": {
@@ -17,7 +17,10 @@
     "debug": "node debug app.js"
   },
   "main": "app.js",
-  "repository": "",
-  "author": "",
-  "license": ""
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/the-lay/comfy-home-frontend.git"
+  },
+  "author": "Ilja Gubins",
+  "license": "MIT"
 }
