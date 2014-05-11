@@ -2,17 +2,30 @@
  * NodeConfiguration
  *
  * @module      :: Model
- * @description :: A short summary of how this model works and what it represents.
- * @docs		:: http://sailsjs.org/#!documentation/models
+ * @description :: NodeConfiguration contains configuration of specific node, for ex. update interval.
+ * @docs    :: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
+
+    forNode: {
+      model: 'node'
+    },
+    nodeType: {
+      type: 'string',
+      required: true
+    },
+    unit: {
+      type: 'string',
+      required: true
+    },
+    updateInterval: {
+      type: 'integer',
+      defaultsTo: '300', //5min
+      required: true
+    }
     
   }
 

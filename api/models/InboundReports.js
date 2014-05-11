@@ -2,17 +2,21 @@
  * InboundReports
  *
  * @module      :: Model
- * @description :: A short summary of how this model works and what it represents.
- * @docs		:: http://sailsjs.org/#!documentation/models
+ * @description :: InboundReports model contains reading reports from nodes.
+ * @docs    :: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
+
+    fromNode: {
+      mode: 'node'
+    },
+    value: {
+      type: 'float',
+      required: true
+    }
     
   }
 

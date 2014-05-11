@@ -2,18 +2,31 @@
  * OutboundMessages
  *
  * @module      :: Model
- * @description :: A short summary of how this model works and what it represents.
- * @docs		:: http://sailsjs.org/#!documentation/models
+ * @description :: OutboundMessages model contains message to system's nodes. 
+ *                 Ex.: refresh value, send new configuration.
+ * @docs    :: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    
+
+    toNode: {
+      model: 'node'
+    },
+    messageReason: {
+      type: 'string',
+      required: true
+    },
+    messageBody: {
+      type: 'string',
+      required: true
+    },
+    processed: {
+      type: 'boolean',
+      defaultsTo: 'false'
+    }
+
   }
 
 };

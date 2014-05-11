@@ -2,18 +2,31 @@
  * InboundMessages
  *
  * @module      :: Model
- * @description :: A short summary of how this model works and what it represents.
- * @docs		:: http://sailsjs.org/#!documentation/models
+ * @description :: InboundMessages model contains message from system's nodes that will be treated as 
+ *           events scheduled for some kind of processing. Example: alert that temperature is too low.
+ * @docs    :: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
 
   attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    
+
+    fromNode: {
+      model: 'node'
+    },
+    messageReason: {
+      type: 'string',
+      required: true
+    },
+    messageBody: {
+      type: 'string',
+      required: true
+    },
+    processed: {
+      type: 'boolean',
+      defaultsTo: 'false'
+    }
+
   }
 
 };
