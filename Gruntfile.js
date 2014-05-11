@@ -160,7 +160,13 @@ module.exports = function (grunt) {
           expand: true,
           flatten: true,
           src: ['bower_components/bootstrap/dist/js/bootstrap.min.js',
+                'bower_components/jquery/dist/jquery.min.map',
                 'bower_components/jquery/dist/jquery.min.js'],
+          dest: '.tmp/public/js'
+        }, {
+          expand: true,
+          flatten: true,
+          src: ['bower_components/smart-time-ago/lib/timeago.js'],
           dest: '.tmp/public/js'
         }
         ]
