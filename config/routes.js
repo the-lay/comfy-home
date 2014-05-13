@@ -32,9 +32,68 @@ module.exports.routes = {
   // located at `views/home/index.ejs`
   // 
   // (This would also work if you had a file at: `/views/home.ejs`)
+  
+  //Home
   '/': {
     view: 'home/index'
-  }
+  },
+
+  //Devices
+  //Should have full spectrum of actions
+  'get /devices/': { //index
+    view: 'devices/index'
+  },
+  'get /devices/:id': { //specific existing device
+    view: 'devices/index'
+  },
+  'post /devices/add': { //add new device
+    view: 'devices/index'
+  },
+  'post /devices/:id/edit': { //edit existing device
+    view: 'devices/index'
+  },
+  'post /devices/:id/delete': { //delete existing device
+    view: 'devices/index'
+  },
+
+  //History
+  //Only index, get specific and delete
+  'get /history/': { //index
+    view: 'history/index'
+  },
+  'get /history/:id': { //specific existing event
+    view: 'history/index'
+  },
+  'post /history/:id/delete': { //delete existing event
+    view: 'history/index'
+  },
+
+  //Triggers
+  //Should have full spectrum of actions
+  'get /triggers/': { //index
+    view: 'triggers/index'
+  },
+  'get /triggers/:id': { //specific existing trigger
+    view: 'triggers/index'
+  },
+  'post /triggers/add': { //add new trigger condition
+    view: 'triggers/index'
+  },
+  'post /triggers/:id/edit': { //edit existing trigger
+    view: 'triggers/index'
+  },
+  'post /triggers/:id/delete': { //delete existing trigger
+    view: 'triggers/index'
+  },
+
+  //Dashboard
+  //There will be index and use actions
+  'get /dashboard/': { //index
+    view: 'dashboard/index'
+  },
+  'post /dashboard/use/:id': { //execute something somewhere
+    view: 'dashboard/index'
+  },
 
   /*
   // But what if you want your home page to display
