@@ -11,7 +11,7 @@ module.exports = {
   attributes: {
 
     fromNode: {
-      mode: 'node'
+      model: 'node'
     },
     value: {
       type: 'float',
