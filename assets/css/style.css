@@ -27,14 +27,11 @@ nav div, h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
-.nav-pills>li.active>a, .nav-pills>li.active>a:focus {
-  color: #000;
-  background-color: transparent;
-}
-
+.nav-pills>li.active>a,
+.nav-pills>li.active>a:focus,
 .nav-pills>li.active>a:hover {
-  background-color: #eee;
   color: #000;
+  background-color: #eee;
 }
 
 .carousel-control.left, .carousel-control.right {
@@ -52,12 +49,8 @@ nav div, h1, h2, h3, h4, h5, h6 {
   margin-bottom: 30px;
 }
 
-a.thumbnail:hover, a.thumbnail:focus{
-  border: 1px solid black;
-}
-
-footer p {
-  text-align: center;
+.logo {
+  cursor: default;
 }
 
 @media (max-width: 992px){
