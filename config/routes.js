@@ -40,21 +40,11 @@ module.exports.routes = {
 
   //Devices
   //Should have full spectrum of actions
-  'get /devices/': { //index
-    view: 'devices/index'
-  },
-  'get /devices/:id': { //specific existing device
-    view: 'devices/index'
-  },
-  'post /devices/add': { //add new device
-    view: 'devices/index'
-  },
-  'post /devices/:id/edit': { //edit existing device
-    view: 'devices/index'
-  },
-  'post /devices/:id/delete': { //delete existing device
-    view: 'devices/index'
-  },
+  'get /devices/': 'DevicesController.index',
+  'get /devices/:id': 'DevicesController.details',
+  'post /devices/add': 'DevicesController.add',
+  'post /devices/:id/edit': 'DevicesController.edit',
+  'get /devices/:id/delete': 'DevicesController.delete',
 
   //History
   //Only index, get specific and delete
