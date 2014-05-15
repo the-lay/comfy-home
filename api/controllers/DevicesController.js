@@ -39,7 +39,7 @@ module.exports = {
       return res.view('devices/index', {
         nodes: results.nodes,
         discoveredNodes: results.discoveredNodes,
-        error: sessionError
+        errorMessage: sessionError
       });
     });
 
@@ -107,7 +107,7 @@ module.exports = {
         unit: req.body.unit,
         updateInterval: req.body.updateInterval
       }).done(function(err, nodeObject) {
-        
+
         if (err) {
           if (err.ValidationError) {
             req.session.error = "Validation error!";
