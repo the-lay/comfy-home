@@ -8,7 +8,7 @@
     });
 
     socket.on('node', function mes(message) {
-      if (message.data) {
+      if (message.data && message.data.verb === 'created') {
         console.log(message);
         $('#nodesTbody').append('<tr>'+
           '<td>'+message.data.id+'</td>'+
@@ -21,7 +21,7 @@
     });
 
     socket.on('discoveredNode', function mes(message) {
-      if (message.data) {
+      if (message.data && message.data.verb === 'created') {
         console.log('got something!');
         $('#discNodesTbody').append('<tr>'+
           '<td>'+message.data.id+'</td>'+
