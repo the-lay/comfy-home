@@ -45,6 +45,7 @@ module.exports.routes = {
   'post /devices/add': 'DevicesController.add',
   'post /devices/:id/edit': 'DevicesController.edit',
   'get /devices/:id/delete': 'DevicesController.delete',
+  '/subscribe/devices': 'DevicesController.subscribe',
 
   //History
   //Only index, get specific and delete

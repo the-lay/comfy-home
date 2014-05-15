@@ -3,6 +3,10 @@
   <div class="row">
     <div class="col-xs-12">
 
+      <% if (errorMessage) { %>
+        <div class="alert alert-danger"><%=errorMessage%></div>
+      <% } %>
+
       <div class="row">
         <div class="col-md-12">
           <h2>Add new node</h2>
@@ -15,11 +19,37 @@
           </form>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <h2 class="sub-header">Discovered nodes</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody id="discNodesTbody">
+                <% for(var i=0; i<discoveredNodes.length; i++) { %>
+                <tr>
+                  <td><%=discoveredNodes[i].id%></td>
+                  <td><%=discoveredNodes[i].name%></td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
       
       <div class="row">
         <div class="col-md-12">
 
-          <h2 class="sub-header">Nodes in the system</h2>
+          <h2 class="sub-header">Nodes</h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -29,20 +59,16 @@
                   <th>Node type</th>
                   <th>Unit</th>
                   <th>Update interval</th>
-                  <th>Created at</th>
-                  <th>Updated at</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="nodesTbody">
                 <% for(var i=0; i<nodes.length; i++) { %>
                 <tr>
                   <td><%=nodes[i].id%></td>
                   <td><%=nodes[i].name%></td>
-                  <td><%=nodes[i].nodeConfiguration.nodeType%></td>
-                  <td><%=nodes[i].nodeConfiguration.unit%></td>
-                  <td><%=nodes[i].nodeConfiguration.updateInterval%></td>
-                  <td><%=nodes[i].createdAt%></td>
-                  <td><%=nodes[i].updatedAt%></td>
+                  <td><%=nodes[i].nodeType%></td>
+                  <td><%=nodes[i].unit%></td>
+                  <td><%=nodes[i].updateInterval%></td>
                 </tr>
                 <% } %>
               </tbody>
