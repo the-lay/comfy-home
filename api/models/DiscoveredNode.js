@@ -13,8 +13,11 @@ module.exports = {
     name: {
       type: 'string',
       required: true
+    },
+    hwId: {
+      type: 'string',
+      required: true
     }
-    
   }
 
 };

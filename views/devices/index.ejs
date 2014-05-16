@@ -30,6 +30,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="discNodesTbody">
@@ -37,6 +38,7 @@
                 <tr>
                   <td><%=discoveredNodes[i].id%></td>
                   <td><%=discoveredNodes[i].name%></td>
+                  <td><a href="#"><span class="glyphicon glyphicon-plus"></span></a></td>
                 </tr>
                 <% } %>
               </tbody>
@@ -59,6 +61,7 @@
                   <th>Node type</th>
                   <th>Unit</th>
                   <th>Update interval</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="nodesTbody">
@@ -69,6 +72,10 @@
                   <td><%=nodes[i].nodeType%></td>
                   <td><%=nodes[i].unit%></td>
                   <td><%=nodes[i].updateInterval%></td>
+                  <td>
+                    <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                  </td>
                 </tr>
                 <% } %>
               </tbody>

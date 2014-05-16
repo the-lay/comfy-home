@@ -28,24 +28,36 @@
 
 module.exports.routes = {
 
-  // By default, your root route (aka home page) points to a view
-  // located at `views/home/index.ejs`
-  // 
-  // (This would also work if you had a file at: `/views/home.ejs`)
-  
   //Home
+  //TODO
   '/': {
     view: 'home/index'
   },
 
-  //Devices
-  //Should have full spectrum of actions
+  /**
+   * Devices
+   */
   'get /devices/': 'DevicesController.index',
+
+  //specific device
   'get /devices/:id': 'DevicesController.details',
-  'post /devices/add': 'DevicesController.add',
+
+  //edit device
   'post /devices/:id/edit': 'DevicesController.edit',
-  'get /devices/:id/delete': 'DevicesController.delete',
+
+  //device discovery
+  'post /devices/found': 'DevicesController.found',
+
+  //device pairing and setup
+  'post /devices/pairing': 'DevicesController.checkPairing',
+  'post /devices/setup/:id': 'DevicesController.setup',
+
+
+  /**
+   * Subscription
+   */
   '/subscribe/devices': 'DevicesController.subscribe',
+  //TODO subscription for history and events
 
   //History
   //Only index, get specific and delete
