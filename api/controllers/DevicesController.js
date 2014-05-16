@@ -2,13 +2,10 @@
  * DevicesController
  *
  * @description :: Server-side logic for managing devices
- * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
 module.exports = {
 	
-
-
   /**
    * `DevicesController.index()`
    * Shows list of discovered nodes and list of active nodes.
@@ -114,7 +111,8 @@ module.exports = {
 
       DiscoveredNode.create({
         name: req.body.name,
-        hwId: req.body.hwId
+        hwId: req.body.hwId,
+        paired: false
       }).done(function(err, discNode) {
 
         if (err) {
@@ -141,6 +139,7 @@ module.exports = {
    * To ensure that it's indeed user's device
    * user must enter hwId that should be written on
    * device.
+   * Will be accessible as an AJAX endpoint
    */
   checkPairing: function(req, res) {
     if (req.body) {
@@ -149,33 +148,86 @@ module.exports = {
 
           if (err) {
             console.log(err);
-            return res.redirect('/devices/');
+            return res.send(500);
           } else {
             //check entered hwId and the one that device sent
             if (req.body.hwId === discNode.hwId) {
-              //move the device to active devices
-
-              //redirect to setup - /devices/setup/id
-              return res.redirect('/devices/setup/id');
+              discNode.paired = true;
+              return res.send(200);
             } else {
-              return res.redirect('/devices/');
+              return res.send(302);
             }
           }
 
         });
     } else {
-      return res.redirect('/devices/');
+      return res.send(500);
     }
+
   },
 
+
+  /**
+   * `DevicesController.setupIndex()`
+   * Interactive device setup page.
+   */
+  setupIndex: function(req, res) {
+    if (req.params.id) {
+      DiscoveredNode.findOne(req.params.id).done(function(err, node) {
+        return res.view('devices/setup', {
+          deviceId: req.params.id,
+          node: node
+        });
+      });
+    } else {
+      return res.redirect('/devices/');
+    }
+
+  },
+
+  /**
+   * `DevicesController.setup()`
+   * Confirmation of setup
+   */
   setup: function(req, res) {
     if (req.params.id && req.body) {
+
+      async.parallel({
+        nodes: function(cb) {
+
+          Node.create({
+            id: req.params.id,
+            name: req.body.name,
+            nodeType: req.body.nodeType,
+            unit: req.body.unit,
+            updateInterval: req.body.updateInterval
+          }).done(function(err, node) { 
+            cb(err, node);
+          });
+
+        },
+        discoveredNodes: function(cb) {
+
+          DiscoveredNode.destroy({
+            id: req.params.id
+          }).done(function(err) {
+            cb(err, null);
+          });
+
+        }
+      }, function(err, results) {
+        if (err) {
+          console.log(err);
+        }
+        req.session.error = "Your device was added to the system!";
+        return res.redirect('/devices/');
+      });
 
     } else {
       return res.redirect('/devices/');
     }
-  },
 
+  },
 
 
   /**
@@ -186,10 +238,7 @@ module.exports = {
     if (req.body) {
 
       Node.create({
-        name: req.body.name,
-        nodeType: req.body.nodeType,
-        unit: req.body.unit,
-        updateInterval: req.body.updateInterval
+
       }).done(function(err, nodeObject) {
 
         if (err) {

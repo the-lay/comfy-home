@@ -4,21 +4,8 @@
     <div class="col-xs-12">
 
       <% if (errorMessage) { %>
-        <div class="alert alert-danger"><%=errorMessage%></div>
+      <div class="alert alert-danger"><%=errorMessage%></div>
       <% } %>
-
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Add new node</h2>
-          <form action="/devices/add" method="POST">
-            <label for="name">Name:</label><input type="text" name="name"/>
-            <label for="nodeType">Node type:</label><input type="text" name="nodeType"/>
-            <label for="unit">Unit:</label><input type="text" name="unit"/>
-            <label for="updateInterval">Update interval:</label><input type="text" name="updateInterval"/>
-            <input type="submit" value="Submit!">
-          </form>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-md-12">
@@ -30,7 +17,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Actions</th>
+                  <th>Add</th>
                 </tr>
               </thead>
               <tbody id="discNodesTbody">
@@ -38,7 +25,7 @@
                 <tr>
                   <td><%=discoveredNodes[i].id%></td>
                   <td><%=discoveredNodes[i].name%></td>
-                  <td><a href="#"><span class="glyphicon glyphicon-plus"></span></a></td>
+                  <td><a href="/devices/setup/<%=discoveredNodes[i].id%>"><span class="glyphicon glyphicon-plus"></span></a></td>
                 </tr>
                 <% } %>
               </tbody>
@@ -52,6 +39,8 @@
         <div class="col-md-12">
 
           <h2 class="sub-header">Nodes</h2>
+
+          <% if (nodes.length > 0) { %>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -81,7 +70,9 @@
               </tbody>
             </table>
           </div>
-
+          <% } else { %>
+            <p>No devices in the system, yet!</p>
+          <% } %>
 
         </div>
       </div>

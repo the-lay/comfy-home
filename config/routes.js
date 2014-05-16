@@ -43,14 +43,15 @@ module.exports.routes = {
   'get /devices/:id': 'DevicesController.details',
 
   //edit device
-  'post /devices/:id/edit': 'DevicesController.edit',
+  'post /devices/edit/:id': 'DevicesController.edit',
 
   //device discovery
   'post /devices/found': 'DevicesController.found',
 
   //device pairing and setup
-  'post /devices/pairing': 'DevicesController.checkPairing',
-  'post /devices/setup/:id': 'DevicesController.setup',
+  'post /devices/pairing': 'DevicesController.checkPairing', //ajax
+  'get /devices/setup/:id': 'DevicesController.setupIndex', //setup page
+  'post /devices/setup/:id': 'DevicesController.setup', //setup validation
 
 
   /**

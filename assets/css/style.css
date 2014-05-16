@@ -8,6 +8,13 @@
   margin: 0 auto;
 }
 
+.centered-button {
+  margin: 0;
+  margin-top: 20px;
+  background-color: transparent;
+  text-align: center;
+}
+
 nav div, h1, h2, h3, h4, h5, h6 {
   font-family: 'Pompiere';
   text-transform: uppercase;
@@ -51,6 +58,10 @@ nav div, h1, h2, h3, h4, h5, h6 {
 
 .logo {
   cursor: default;
+}
+
+#errorPlaceholder {
+  margin-top: 20px;
 }
 
 @media (max-width: 992px){

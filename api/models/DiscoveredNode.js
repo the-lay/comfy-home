@@ -17,6 +17,9 @@ module.exports = {
     hwId: {
       type: 'string',
       required: true
+    },
+    paired: {
+      type: 'string'
     }
   }
 
