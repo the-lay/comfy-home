@@ -15,14 +15,14 @@ module.exports = {
     async.parallel({
       nodes: function(cb) {
         Node.find().sort('added DESC')
-          .done(function(err, nodes) {
+          .exec(function(err, nodes) {
             Node.subscribe(req.socket, nodes);
             cb(err, nodes);
           });
       },
       discoveredNodes: function(cb) {
         DiscoveredNode.find().sort('added ASC')
-          .done(function(err, discNodes) {
+          .exec(function(err, discNodes) {
             cb(err, discNodes);
           });
       }
@@ -48,7 +48,7 @@ module.exports = {
    */
   details: function (req, res) {
     if (req.params.id) {
-      Node.findOne(req.params.id).done(function(err, node) {
+      Node.findOne(req.params.id).exec(function(err, node) {
         if (err || !node) {
           req.session.error = "No device with such ID found";
           return res.redirect('/devices/');
@@ -64,44 +64,6 @@ module.exports = {
   },
 
   /**
-   * `DevicesController.subscribe()`
-   * Allows clients to subscribe for publish events.
-   * Used on index page - to monitor new discovered devices.
-   */
-  subscribe: function(req, res) {
-    if (req.isSocket) {
-      console.log('new socket client connected: ', req.socket.id);
-      async.parallel({
-        nodes: function(cb) {
-          Node.find().sort('added DESC')
-            .done(function(err, nodes) {
-              cb(err, nodes);
-            });
-        },
-        discoveredNodes: function(cb) {
-          DiscoveredNode.find().sort('added DESC')
-            .done(function(err, discNodes) {
-              cb(err, discNodes);
-            });
-        }
-      }, function(err, results) {
-        if (err) {
-          console.log(err);
-          return res.send(500);
-        } else {
-          Node.watch(req.socket, results.nodes);
-          DiscoveredNode.watch(req.socket, results.discoveredNodes);
-        
-          return res.json(results);
-        }
-      });
-    } else {
-      return res.send(403);
-    }
-
-  },
-
-  /**
    * `DevicesController.found()`
    * When C daemon get broadcast from a new device, it
    * should use this endpoint.
@@ -109,25 +71,40 @@ module.exports = {
   found: function (req, res) {
     if (req.body.name) {
 
-      DiscoveredNode.create({
+      DiscoveredNode.find({
         name: req.body.name,
-        hwId: req.body.hwId,
-        paired: false
-      }).done(function(err, discNode) {
-
+        hwId: req.body.hwId
+      }).exec(function(err, discNode) {
+        console.log('found node: ', discNode);
         if (err) {
           console.log(err);
           return res.send(500);
+        } else if (discNode.length > 0) {
+          console.log('Duplicate discovered node');
+          return res.send(301);
         } else {
-          DiscoveredNode.publishCreate({
-            id: discNode.id,
-            name: discNode.name
+
+          DiscoveredNode.create({
+            name: req.body.name,
+            hwId: req.body.hwId,
+            paired: false
+          }).exec(function(err, newNode) {
+            if (err) {
+              console.log(err);
+              return res.send(500);
+            } else {
+              DiscoveredNode.publishCreate({
+                id: newNode.id,
+                name: newNode.name
+              });
+
+              return res.send(200);
+            }
           });
-
-          return res.send(200);
+        
         }
-
       });
+
     } else {
       return res.send(403);
     }
@@ -144,7 +121,7 @@ module.exports = {
   checkPairing: function(req, res) {
     if (req.body) {
       DiscoveredNode.findOne(req.body.id)
-        .done(function(err, discNode) {
+        .exec(function(err, discNode) {
 
           if (err) {
             console.log(err);
@@ -173,7 +150,7 @@ module.exports = {
    */
   setupIndex: function(req, res) {
     if (req.params.id) {
-      DiscoveredNode.findOne(req.params.id).done(function(err, node) {
+      DiscoveredNode.findOne(req.params.id).exec(function(err, node) {
         return res.view('devices/setup', {
           deviceId: req.params.id,
           node: node
@@ -185,9 +162,11 @@ module.exports = {
 
   },
 
+
   /**
    * `DevicesController.setup()`
-   * Confirmation of setup
+   * Confirmation of setup - moving the discovered device
+   * to active devices.
    */
   setup: function(req, res) {
     if (req.params.id && req.body) {
@@ -201,7 +180,7 @@ module.exports = {
             nodeType: req.body.nodeType,
             unit: req.body.unit,
             updateInterval: req.body.updateInterval
-          }).done(function(err, node) { 
+          }).exec(function(err, node) { 
             cb(err, node);
           });
 
@@ -210,7 +189,7 @@ module.exports = {
 
           DiscoveredNode.destroy({
             id: req.params.id
-          }).done(function(err) {
+          }).exec(function(err) {
             cb(err, null);
           });
 
@@ -231,70 +210,65 @@ module.exports = {
 
 
   /**
-   * `DevicesController.add()`
-   * TODO
+   * `DevicesController.editIndex()`
+   * Rendering edit form.
    */
-  add: function (req, res) {
-    if (req.body) {
-
-      Node.create({
-
-      }).done(function(err, nodeObject) {
-
-        if (err) {
-          if (err.ValidationError) {
-            req.session.error = "Validation error!";
-            return res.redirect('/devices/');
-          }
-          console.log(err);
-          return res.redirect('/devices/');
-        }
-
-        Node.publishCreate({
-          id: nodeObject.id,
-          name: nodeObject.name,
-          nodeType: nodeObject.nodeType,
-          unit: nodeObject.unit,
-          updateInterval: nodeObject.updateInterval
+  editIndex: function (req, res) {
+    if (req.params.id) {
+      Node.findOne(req.params.id).exec(function(err, node) {
+        return res.view('devices/edit', {
+          node: node
         });
-
-        return res.redirect('/devices/');
       });
     } else {
+      req.session.error = "This should not have happened. Code 2.";
       return res.redirect('/devices/');
     }
+
   },
 
 
   /**
    * `DevicesController.edit()`
+   * Actually editing the node instance.
    */
   edit: function (req, res) {
-    if (req.body.id && req.params.id) {
-      Node.findOne(req.params.id).done(function(err, user) {
-        //update properties
-      user.save(function(err) {
-       return res.redirect('/devices/');
+    if (req.body && req.params.id) {
+
+      Node.update({
+        id: req.params.id
+      }, {
+        name: req.body.name,
+        nodeType: req.body.nodeType,
+        unit: req.body.unit,
+        updateInterval: req.body.updateInterval
+      }, function(err, node) {
+        if (err) {
+          req.session.error = "This should not have happened. Code 3.";
+          console.log(err);
+          return res.redirect('/devices/');
+        } else {
+          return res.redirect('/devices/'+req.params.id);
+        }
+
       });
-    });
-      //retrieve model
-      //update
-      //save
-      //redirect to index
+
     } else {
       return res.redirect('/devices/');
     }
+
   },
 
 
   /**
    * `DevicesController.delete()`
+   * Handling deletion of active devices.
    */
   delete: function (req, res) {
     if (req.params.id) {
       Node.destroy({
         id: req.params.id
-      }).done(function(err, removedNode) {
+      }).exec(function(err, removedNode) {
         if (err) {
           console.log(err);
         }

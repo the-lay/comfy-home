@@ -11,13 +11,15 @@
         <div class="col-md-12">
 
           <h2 class="sub-header">Discovered nodes</h2>
+
+          <% if (discoveredNodes.length > 0) { %>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Add</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="discNodesTbody">
@@ -31,6 +33,9 @@
               </tbody>
             </table>
           </div>
+          <% } else { %>
+            <p>No new discovered devices!</p>
+          <% } %>
 
         </div>
       </div>
@@ -50,7 +55,7 @@
                   <th>Node type</th>
                   <th>Unit</th>
                   <th>Update interval</th>
-                  <th>Actions</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="nodesTbody">
@@ -62,8 +67,8 @@
                   <td><%=nodes[i].unit%></td>
                   <td><%=nodes[i].updateInterval%></td>
                   <td>
-                    <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
-                    <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                    <a href="/devices/edit/<%=nodes[i].id%>"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="/devices/delete/<%=nodes[i].id%>"><span class="glyphicon glyphicon-trash"></span></a>
                   </td>
                 </tr>
                 <% } %>
@@ -80,3 +85,47 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  (function (io) {
+    var socket = io.connect();
+
+    socket.on('connect', function socketConnected() {
+
+      socket.get('/subscribe/devices');
+
+  /*TODO: acceptable table appending*/
+      socket.on('node', function mes(message) {
+        console.log(message);
+        if (message.data && message.verb === 'created') {
+          // console.log(message);
+          $('#nodesTbody').append('<tr>'+
+            '<td>'+message.data.id+'</td>'+
+            '<td>'+message.data.name+'</td>'+
+            '<td>'+message.data.nodeType+'</td>'+
+            '<td>'+message.data.unit+'</td>'+
+            '<td>'+message.data.updateInterval+'</td>'+
+            '<td><a href="#"><span class="glyphicon glyphicon-pencil"></span></a>'+
+            '<a href="#"><span class="glyphicon glyphicon-trash"></span></a>'+
+            '</td>'+
+            '</tr>');
+        }
+      });
+
+      socket.on('discoverednode', function mes(message) {
+        console.log(message);
+        if (message.data && message.verb === 'created') {
+          // console.log(message);
+          $('#discNodesTbody').append('<tr>'+
+            '<td>'+message.data.id+'</td>'+
+            '<td>'+message.data.name+'</td>'+
+            '<td><a href="#"><span'+
+            ' class="glyphicon glyphicon-plus"></span></a></td>'+
+            '</tr>');
+        }
+      });
+    });
+    window.socket = socket;
+    
+  })(window.io);
+</script>

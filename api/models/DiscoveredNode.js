@@ -2,8 +2,7 @@
  * DiscoveredNode
  *
  * @module      :: Model
- * @description :: Node model contains every node entity in the system.
- * @docs    :: http://sailsjs.org/#!documentation/models
+ * @description :: Model for new discovered nodes that are not paired to any network yet.
  */
 
 module.exports = {

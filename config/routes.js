@@ -42,9 +42,6 @@ module.exports.routes = {
   //specific device
   'get /devices/:id': 'DevicesController.details',
 
-  //edit device
-  'post /devices/edit/:id': 'DevicesController.edit',
-
   //device discovery
   'post /devices/found': 'DevicesController.found',
 
@@ -53,13 +50,30 @@ module.exports.routes = {
   'get /devices/setup/:id': 'DevicesController.setupIndex', //setup page
   'post /devices/setup/:id': 'DevicesController.setup', //setup validation
 
+  //edit device
+  'get /devices/edit/:id': 'DevicesController.editIndex',
+  'post /devices/edit/:id': 'DevicesController.edit',
+
+  //delete device
+  'get /devices/delete/:id': 'DevicesController.delete',
+
+
 
   /**
-   * Subscription
+   * Socket subscriptions
    */
-  '/subscribe/devices': 'DevicesController.subscribe',
+  '/subscribe/devices': 'SubscribeController.subscribeDiscoveredDevices',
   //TODO subscription for history and events
 
+
+
+  /**
+   * Reporting
+   */
+
+
+
+   
   //History
   //Only index, get specific and delete
   'get /history/': { //index
