@@ -12,7 +12,6 @@
 
           <h2 class="sub-header">Discovered nodes</h2>
 
-          <% if (discoveredNodes.length > 0) { %>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -23,6 +22,7 @@
                 </tr>
               </thead>
               <tbody id="discNodesTbody">
+              <% if (discoveredNodes.length > 0) { %>
                 <% for(var i=0; i<discoveredNodes.length; i++) { %>
                 <tr>
                   <td><%=discoveredNodes[i].id%></td>
@@ -30,12 +30,13 @@
                   <td><a href="/devices/setup/<%=discoveredNodes[i].id%>"><span class="glyphicon glyphicon-plus"></span></a></td>
                 </tr>
                 <% } %>
+              <% } else { %>
+                <tr id="noDiscovered"><td colspan="6" class="text-center">No new discovered devices!</td></tr>
+              <% } %>
               </tbody>
             </table>
           </div>
-          <% } else { %>
-            <p>No new discovered devices!</p>
-          <% } %>
+
 
         </div>
       </div>
@@ -45,7 +46,7 @@
 
           <h2 class="sub-header">Nodes</h2>
 
-          <% if (nodes.length > 0) { %>
+          
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -59,9 +60,10 @@
                 </tr>
               </thead>
               <tbody id="nodesTbody">
+              <% if (nodes.length > 0) { %>
                 <% for(var i=0; i<nodes.length; i++) { %>
                 <tr>
-                  <td><%=nodes[i].id%></td>
+                  <td><a href="/devices/<%=nodes[i].id%>"><%=nodes[i].id%></a></td>
                   <td><%=nodes[i].name%></td>
                   <td><%=nodes[i].nodeType%></td>
                   <td><%=nodes[i].unit%></td>
@@ -72,12 +74,13 @@
                   </td>
                 </tr>
                 <% } %>
+              <% } else { %>
+                <tr><td colspan="6" class="text-center">No devices in the system, yet!</td></tr>
+              <% } %>
               </tbody>
             </table>
           </div>
-          <% } else { %>
-            <p>No devices in the system, yet!</p>
-          <% } %>
+          
 
         </div>
       </div>
@@ -95,31 +98,14 @@
       socket.get('/subscribe/devices');
 
   /*TODO: acceptable table appending*/
-      socket.on('node', function mes(message) {
-        console.log(message);
-        if (message.data && message.verb === 'created') {
-          // console.log(message);
-          $('#nodesTbody').append('<tr>'+
-            '<td>'+message.data.id+'</td>'+
-            '<td>'+message.data.name+'</td>'+
-            '<td>'+message.data.nodeType+'</td>'+
-            '<td>'+message.data.unit+'</td>'+
-            '<td>'+message.data.updateInterval+'</td>'+
-            '<td><a href="#"><span class="glyphicon glyphicon-pencil"></span></a>'+
-            '<a href="#"><span class="glyphicon glyphicon-trash"></span></a>'+
-            '</td>'+
-            '</tr>');
-        }
-      });
-
       socket.on('discoverednode', function mes(message) {
         console.log(message);
         if (message.data && message.verb === 'created') {
-          // console.log(message);
+          $('#noDiscovered').hide();
           $('#discNodesTbody').append('<tr>'+
             '<td>'+message.data.id+'</td>'+
             '<td>'+message.data.name+'</td>'+
-            '<td><a href="#"><span'+
+            '<td><a href="/devices/setup/'+message.data.id+'"><span'+
             ' class="glyphicon glyphicon-plus"></span></a></td>'+
             '</tr>');
         }

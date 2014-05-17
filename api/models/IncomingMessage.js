@@ -1,17 +1,16 @@
 /**
- * OutboundMessages
+ * InboundMessages
  *
  * @module      :: Model
- * @description :: OutboundMessages model contains message to system's nodes. 
- *                 Ex.: refresh value, send new configuration.
- * @docs    :: http://sailsjs.org/#!documentation/models
+ * @description :: InboundMessages model contains message from system's nodes that will be treated as 
+ *           events scheduled for some kind of processing. Example: alert that temperature is too low.
  */
 
 module.exports = {
 
   attributes: {
 
-    toNode: {
+    fromNode: {
       model: 'node'
     },
     messageReason: {

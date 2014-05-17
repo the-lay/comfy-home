@@ -53,7 +53,14 @@ module.exports = {
           req.session.error = "No device with such ID found";
           return res.redirect('/devices/');
         } else {
-          return res.view('devices/details', { node: node });
+          IncomingMessage.find({
+            fromNode: req.params.id
+          }).limit(20).exec(function(err, messages) {
+            return res.view('devices/details', { 
+              node: node, 
+              messages: messages 
+            });
+          });
         }
       });
     } else {
@@ -75,12 +82,10 @@ module.exports = {
         name: req.body.name,
         hwId: req.body.hwId
       }).exec(function(err, discNode) {
-        console.log('found node: ', discNode);
         if (err) {
           console.log(err);
           return res.send(500);
         } else if (discNode.length > 0) {
-          console.log('Duplicate discovered node');
           return res.send(301);
         } else {
 

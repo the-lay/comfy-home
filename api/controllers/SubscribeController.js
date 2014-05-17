@@ -13,7 +13,6 @@ module.exports = {
    */
   subscribeDiscoveredDevices: function(req, res) {
     if (req.isSocket) {
-      console.log('new socket client connected: ', req.socket.id);
       async.parallel({
         nodes: function(cb) {
           Node.find().sort('added DESC')
@@ -32,17 +31,29 @@ module.exports = {
           console.log(err);
           return res.send(500);
         } else {
-          Node.watch(req.socket, results.nodes);
-          DiscoveredNode.watch(req.socket, results.discoveredNodes);
+          Node.watch(req.socket);
+          DiscoveredNode.watch(req.socket);
         
-          return res.json(results);
+          return res.send(200);
         }
       });
     } else {
       return res.send(403);
     }
 
-  }
+  },
+
+  /**
+   * `SubscribeController.subscribeDeviceReports()`
+   * Subscription for new incoming messages
+   */
+   subscribeIncoming: function(req, res) {
+    if (req.isSocket) {
+      IncomingMessage.watch(req.socket);
+    } else {
+      return res.send(403);
+    }
+   }
 
 };
 

@@ -8,24 +8,6 @@
  * http://sailsjs.org/#documentation
  */
 
-
-
-/**
- * (1) Core middleware
- *
- * Middleware included with `app.use` is run first, before the router
- */
-
-
-/**
- * (2) Static routes
- *
- * This object routes static URLs to handler functions--
- * In most cases, these functions are actions inside of your controllers.
- * For convenience, you can also connect routes directly to views or external URLs.
- *
- */
-
 module.exports.routes = {
 
   //Home
@@ -33,6 +15,7 @@ module.exports.routes = {
   '/': {
     view: 'home/index'
   },
+
 
   /**
    * Devices
@@ -58,22 +41,23 @@ module.exports.routes = {
   'get /devices/delete/:id': 'DevicesController.delete',
 
 
-
   /**
    * Socket subscriptions
    */
+   //new discovered devices
   '/subscribe/devices': 'SubscribeController.subscribeDiscoveredDevices',
-  //TODO subscription for history and events
-
+  
+  //new reports of the specific node
+  '/subscribe/incoming': 'SubscribeController.subscribeIncoming',
 
 
   /**
    * Reporting
    */
+  'post /report': 'ReportingController.incoming',
 
 
 
-   
   //History
   //Only index, get specific and delete
   'get /history/': { //index

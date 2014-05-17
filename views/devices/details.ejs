@@ -6,7 +6,7 @@
       <div class="row">
         <div class="col-md-12">
 
-          <h2 class="sub-header">Nodes in the system</h2>
+          <h2 class="sub-header">Node details</h2>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -34,6 +34,31 @@
             </table>
           </div>
 
+          <h2 class="sub-header">Last 20 messages</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Reason</th>
+                  <th>Body</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="messagesTbody">
+                <% if (messages.length > 0) { %>
+                <% for(var i=0; i<messages.length; i++) { %>
+                <tr>
+                  <td><%=messages[i].messageReason%></td>
+                  <td><%=messages[i].messageBody%></td>
+                  <td><%=messages[i].createdAt%></td>
+                </tr>
+                <% } %>
+                <% } else { %>
+                  <tr><td colspan="7" class="text-center">No messages, yet!</td></tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
 
         </div>
       </div>
@@ -41,3 +66,26 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  (function (io) {
+    var socket = io.connect();
+
+    socket.on('connect', function socketConnected() {
+
+      socket.get('/subscribe/subscribeIncoming');
+
+      socket.on('incomingmessage', function mes(message) {
+        if (message.data && message.verb === 'created' 
+          && message.data.nodeId === '<%=node.id%>') {
+          $('#messagesTbody').append('<tr>'+
+            '<td>'+message.data.messageReason+'</td>'+
+            '<td>'+message.data.messageBody+'</td>'+
+            '<td>'+message.data.createdAt+'</td>');
+        }
+      });
+    });
+    window.socket = socket;
+    
+  })(window.io);
+</script>
