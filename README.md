@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/the-lay/comfy-home.png?label=ready&title=Ready)](https://waffle.io/the-lay/comfy-home)
 homemade-smart-home
 ===================
 DIY smarthome   
