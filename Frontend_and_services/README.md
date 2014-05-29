@@ -1,6 +1,3 @@
-# comfy-home
-### DIY Smarthome
-
 What's here
 ==
 **Currently:**  
