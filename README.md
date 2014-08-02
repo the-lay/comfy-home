@@ -2,7 +2,7 @@
 homemade-smart-home
 ===================
 DIY smarthome   
-Expecting some kind of beta in the beginning of June 2014.
+Expecting some kind of beta somewhere in 2014
 
 
 Old readme
